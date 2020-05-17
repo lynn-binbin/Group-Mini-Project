@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Display buildings in 3D</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.10.0/mapbox-gl.css" rel="stylesheet" />
+<style>
+	body { margin: 0; padding: 0; }
+	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<style>
+    #map {
+        position: fixed;
+        width:60%;
+    }
+    #features{
+        width:40%;
+        margin-left: 60%;
+        font-family: sans-serif;
+        overflow-y: scroll;
+        background-color: rgb(250,250,250,0.7);
+    }
+    section {
+        padding: 100px 30px;
+        line-height: 25px;
+        border-bottom: 1px solid #ddd;
+        opacity: 0.25;
+        font-size: 13px;
+    }
+    section.active{
+        opacity: 1;
+    }
+    section:last-child{
+        border-bottom: none;
+        margin-bottom: 200px;
+    }
+   
+    .mapboxgl-popup {
+        max-width: 400px;
+        font: 12px/20px 'Helvetica Neuw', Arial, Helvetica, sans-serif;
+    }
+    .marker {
+        background-image: url(icon.png);
+        background-size: cover;
+        width: 20px;
+        height:20px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+
+    .label {
+            width: 14%;
+            font-size: 10px;
+            display: inline-block;
+            text-align: center;
+        }
+        .map-overlay {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            background-color: #fff;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+            border-radius: 3px;
+            position: absolute;
+            width: 25%;
+            top: 10px;
+            left: 10px;
+            padding: 10px;
+            display: none;
+    }  
+    </style>
+<div id="map"></div>
+<div id='features'>
+    <section id='start' class="active">
+        <h2>Shanghai Skyline</h2>
+        <p>Scroll down to read more. Hover over the markers to see detials.</p>
+        <p>Scroll down to read more. Hover over the markers to see detials.</p>
+        <p>Building data from:</p>
+    </section>
+    
+    <section id='park hotel'>
+        <h3>1934 Park Hotel</h3>
+        <p></p>
+    </section>
+    
+    <section id='HSBC' class="active">
+        <h3>1923 HSBC World Bank</h3>
+        <p>7 floors</p>
+    </section>
+    
+    <section id='Broadway Mansions' class="active">
+        <h3>1934 Broadway Mansions</h3>
+        <p>78m</p>
+    </section>
+    
+    <section id='Cathedral' class="active">
+        <h3>1979 St. ignatius cathedral of shanghai</h3>
+        <p>Average height is about 60 meters.</p>
+    </section>
+    
+    <section id='exhibition' class="active">
+        <h3>Shanghai Exhibition Center</h3>
+        <p>The focus is 104m.</p>
+    </section>
+    
+    <section id='Oriental Tower' class="active">
+        <h3>1994 Shanghai Oriental TV Tower</h3>
+        <p>One of the part of Shanghai Skyline</p>
+    </section>
+    
+    <section id='Jinmao' class="active">
+        <h3>1999 Shanghai Jinmao Mall</h3>
+        <p>421 meters</p>
+    </section>
+    
+    <section id='Jinmao' class="active">
+        <h3>2006 Shanghai Shimao International Plaza</h3>
+        <p>333.3 meters</p>
+    </section>
+    
+    <section id='WFC' class="active">
+        <h3>2008 Shanghai World Financial Center</h3>
+        <p>492 meters</p>
+    </section>
+    
+    <section id='Shanghai Tower' class="active">
+        <h3>2015 Shanghai Tower</h3>
+        <p>632 meters</p>
+    </section>
+    
+    <section id='Sinar Mas' class="active">
+        <h3>2017 Shanghai Sinar Mas Paza</h3>
+        <p>320 meters.Sinar Mas Plaza
+ is a skyscraper whose construction was earlier suspended, but resumed construction in 2013, and was completed on January 4, 2017. It is located north of the Bund, the historic river-front district of Shanghai, adjacent to the international cruise terminal.
+</p>
+    </section>
+    
+    <section id='SK' class="active">
+        <h3>2019 Shanghai SK Group Tower</h3>
+        <p>274.95 meters</p>
+    </section>
+
+    
+    </div>
+    
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoibHlubm5ubm5uIiwiYSI6ImNqNDNnZnJ0ZTA3bDYycW50eGZqM2RibngifQ.xg9h-2t6zFHFUo21nH0xEA';
+    var map = new mapboxgl.Map({
+        style: 'mapbox://styles/mapbox/dark-v10',
+        center: [ 121.46907864017749,31.232425525933195],
+
+        zoom: 15.5,
+        pitch: 45,
+        bearing: 27,
+        container: 'map',
+        antialias: true
+    });
+    
+
+
+    // The 'building' layer in the mapbox-streets vector source contains building-height
+    // data from OpenStreetMap.
+
+
+
+        map.addLayer(
+            {
+                'id': '3d-buildings',
+                'source': 'composite',
+                'source-layer': 'building',
+                'filter': ['==', 'extrude', 'true'],
+                'type': 'fill-extrusion',
+                'minzoom': 15,
+                'paint': {
+                    'fill-extrusion-color': '#aaa',
+
+                    // use an 'interpolate' expression to add a smooth transition effect to the
+                    // buildings as the user zooms in
+                    'fill-extrusion-height': [
+                        'interpolate',
+                        ['linear'],
+                        ['zoom'],
+                        15,
+                        0,
+                        15.05,
+                        ['get', 'height']
+                    ],
+                    'fill-extrusion-base': [
+                        'interpolate',
+                        ['linear'],
+                        ['zoom'],
+                        15,
+                        0,
+                        15.05,
+                        ['get', 'min_height']
+                    ],
+                    'fill-extrusion-opacity': 0.6
+                }
+            },
+            labelLayerId
+            );
+    
+map.on('load',function(){
+    
+    var geojson={
+        'type':'FeatureCollection',
+        'features':[
+            {
+            'type':'Feature',
+            'geometry':{
+                type:'Point',
+                'coordinaytes':[121.4716,31.2337]
+            },
+            'properties':{
+                'ID':1,
+                'Event':'Park Hotel',
+                'img':'<img src=\'images/skyline.jpg\'>',
+                'icon':'\'marker\''
+            }
+        },
+            {
+        'type':'Feature',
+        'geometry':{
+            'type':'Point',
+            'coordinates':[121.2906,31.1416]
+        },
+        'Properties':{
+            'ID':2,
+            'Event':'HSBC',
+            'image':'<img src=\'images/skyline.jpg\'>',
+            'icon':'\'marker\''
+        }
+    },
+       {
+        'type':'Feature',
+            'geometry':{
+                'type':'Point',
+                    'coordinate':[121.2906,31.2442]
+            },
+        'properties':{
+            'ID':3,
+            'Event':'Broadway Mansions',
+            'image':'<img src=\'images/skyline.jpg\'>',
+            'icon':'\'marker\''
+        }
+       },
+            {
+        'type':'Feature',
+        'geometry':{
+        'type':'Point',
+        'coordinate':[121.2553,31.1135]
+        },
+        'properties':{
+        'ID':4,
+        'Event':'Cathedral',
+        'image':'<img src=\'images/skyline.jpg\'>',
+        'icon':'\'marker\''
+        }
+            },
+            {
+                 'type':'Feature',
+        'geometry':{
+        'type':'Point',
+        'coordinate':[121.4515,31.2257]
+        },
+        'properties':{
+        'ID':5,
+        'Event':'exhibition',
+        'image':'<img src=\'images/skyline.jpg\'>',
+        'icon':'\'marker\'' 
+            }
+            },
+            {
+                  'type':'Feature',
+        'geometry':{
+        'type':'Point',
+        'coordinate':[121.4998,31.2397]
+        },
+        'properties':{
+        'ID':6,
+        'Event':'Oriental Tower',
+        'image':'<img src=\'images/skyline.jpg\'>',
+        'icon':'\'marker\''
+            }
+            },
+
+
+
+       {
+    'type':'Feature',
+        'geometry':{
+        'type':'Point',
+        'coordinate':[121.5057,31.2353]
+            },
+        'properties':{
+        'ID':7,
+        'Event':'Jinmao',
+        'image':'<img src=\'images/skyline.jpg\'>',
+        'icon':'\'marker\''
+}
+},
+       {
+    'type':'Feature',
+        'geometry':{
+        'type':'Point',
+        'coordinate':[31.2343,121.4761]
+            },
+        'properties':{
+        'ID':8,
+        'Event':'Shimao',
+        'image':'<img src=\'images/skyline.jpg\'>',
+        'icon':'\'marker\''
+}
+},
+       {
+    'type':'Feature',
+        'geometry':{
+        'type':'Point',
+        'coordinate':[121.5074,31.2346]
+            },
+        'properties':{
+        'ID':9,
+        'Event':'WFC',
+        'image':'<img src=\'images/skyline.jpg\'>',
+        'icon':'\'marker\''
+}
+},
+       {
+    'type':'Feature',
+        'geometry':{
+        'type':'Point',
+        'coordinate':[121.506,31.2335,]
+            },
+        'properties':{
+        'ID':10,
+        'Event':'Shanghai Tower',
+        'image':'<img src=\'images/skyline.jpg\'>',
+        'icon':'\'marker\''
+}
+},
+       {
+    'type':'Feature',
+        'geometry':{
+        'type':'Point',
+        'coordinate':[121.4990,31.2492]
+            },
+        'properties':{
+        'ID':11,
+        'Event':'Sinar Mas',
+        'image':'<img src=\'images/skyline.jpg\'>',
+        'icon':'\'marker\''
+}
+},
+       {
+    'type':'Feature',
+        'geometry':{
+        'type':'Point',
+        'coordinate':[121.2553,31.1135]
+            },
+        'properties':{
+        'ID':12,
+        'Event':'SK',
+        'image':'<img src=\'images/skyline.jpg\'>',
+        'icon':'\'marker\''
+}
+}
+       ]
+       };
+    
+geojson.features.forEach(function(marker)){
+    var popup = newe mapboxgl.Popup()
+    .setHTML {marker.properties.image};
+    
+    var el = document.createElement('div');
+    el.className='marker';
+    
+    const myMarker=new mapboxgl.Marker(el,{
+        offset:[0,-25]
+    })
+    .setLngLat(marker.geometry.coordinates)
+    .setPopup(popup)
+    .addTo(map);
+    
+    const markerDiv = myMarker.getElement();
+    
+    markerDiv.addEventListener('moussenter',()=> myMarker.togglePopup());
+    markerDiv.addEventListener('mouseleavr',()=> myMarker.togglePopup());
+});
+    });
+       
+ 
+
+
+    
+    var chapters={
+        'start':{
+            bearing:-17.6
+            center:[121.46907864017749,31.232425525933195],
+            zoom:15.5,
+            pitch:0
+        },
+        'park hotel':{
+            duration:6000,
+            center:[121.4716,31.2337],
+            bearing:150
+            zoom:14.9,
+            pitch:45,
+        },
+        'HSBC':{
+            bearing:90,
+            center:[121.2906,31.1416],
+            zoom:14.9,
+            pitch:45,
+            speed:0.5
+        },
+        'Broadway Mansions':{
+            bearing:27,
+            center:[121.2906,31.2442],
+            zoom:14.9,
+
+        },
+        'Cathedral':{
+            bearing:27,
+            center:[121.2553,31.1135],
+            zoom:17.5,
+            pitch:40
+        },
+        'exhibition':{
+            bearing:27,
+            center:[121.4515,31.2257],
+            zoom:14.9,
+            pitch:45
+        },
+        'Oriental Tower':{
+            bearing:27,
+            center:[121.4998,31.2397],
+            zoom:14.9,
+            pitch:45
+        },
+        'Jinmao':{
+            bearing:27,
+            center:[121.5057,31.2353],
+            zoom:14.9,
+            pitch:45
+        },
+        'Shimao':{
+            bearing:27,
+            center:[121.4761,31.2343],
+            zoom:14.9,
+            pitch:45
+        },
+        'WFC':{
+            bearing:27,
+            center:[121.5074,31.2346],
+            zoom:14.9,
+            pitch:45
+        },
+        'Shanghai Tower':{
+            bearing:27,
+            center:[121.506,31.2335],
+            zoom:14.9,
+            pitch:45
+        },
+        'Sinar Mas':{
+            bearing:27,
+            center:[121.4990,31.2492],
+            zoom:17.9,
+            pitch:45
+        },
+        'SK':{
+            bearing:27,
+            center:[121.46977,31.17243],
+            zoom:14.9,
+            pitch:45
+        }
+    };
+   
+    
+    window.onscroll = function(){
+        var chapterNames = Object.keys(chapters);
+        
+        for (var i=0;i<chapterNames.length;i++){
+            var chapetrName = chapterNames[i];
+            
+            if (isElementOnScreen(chapetrName)){
+                setActiveChapter(chapetrName);
+                break;
+            }
+        }
+    };
+    
+    var activeChapterName='start';
+    
+    function setActiveChapter(chapterName){
+        if (chapterName === activeChapterName) return;
+        
+        map.flyTo(chapters[chapterName]);
+        
+        document.getElementById(chapterName).setAttribute('class','active');
+        document.getElementById(activeChapterName).setAttribute('class','');
+        
+        activeChapterName=chapterName;
+    }
+    
+    function isElementOnScreen(id){
+        var element = document.getElementById(id);
+        var bounds = element.getBoundingClientRect();
+        console.log(bounds);
+        return.bounds.top < window.innerHeight && bounds.bottom >20;
+    }    
+
+</script>
+    
+    var map= new OSMBuildings({
+    container:'map',
+    position:{latitude:31.2397,longitude:121.4998},
+    style:'mapbox://styles/mapbox/dark-v10',
+    zoom:16,
+    minizoom:15,
+    maxzoom:20,
+    tilt:40,
+    rotation: 300,
+    attribution: '© Data <a href="https://openstreetmap.org/copyright/">OpenStreetMap</a> © Map <a href="https://mapbox.com/">Mapbox</a> © 3D <a href="https://osmbuildings.org/copyright/">OSM Buildings</a>'
+});
+
+
+</body>
+</html>
