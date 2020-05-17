@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+
+    <style>
+        body{
+            margin-left: 50px;
+        }
+        .qx{
+            font-style:italic
+        }
+        .jc{
+            font-weight: 900
+        }
+    </style>
+    <link rel="stylesheet" href="css/css.css">
+
+</head>
+<body>
+<div class="main">
+<div>
+    <h1 style="font-size:60px">Data Analysis</h1>
+    <span style="font-weight: 900">Systematic Analysis of Shooting Crimes in Chicago from the 2 Major Trends: Space and Time</span>
+</div>
+<div>
+    <h1>Spatial Trend Analysis</h1>
+    <h1 class="qx">Clustering</h1>
+    
+    <div class="responsive"><img src="./根据地理位置聚类后的分布cluster.png" class="img-responsive" alt="Responsive image">
+    <span class="text">The result of clustering is very different from the actual situation. The possible reason is that the data compiled does not support the method of clustering. There is no practical significance. Therefore, the method of Hotspot Analysis will be attempted.</span></div>
+</div>
+<div>
+    
+</div>
+<div>
+    <h1 class="qx">Hotspot Analysis (Heat Map)</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <span class="jc">General Map</span>
+        </div>
+        <div class="col-md-4">
+            <span class="jc">Map 1: Assault</span>
+        </div>
+        <div class="col-md-4">
+            <span class="jc">Map 2: Battery</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <iframe src="./热点分析图/maps-all.html" frameborder="0"></iframe>
+        </div>
+        <div class="col-md-4">
+            <iframe src="./热点分析图/maps-ASSAULT.html" frameborder="0"></iframe>
+        </div>
+        <div class="col-md-4">
+            <iframe src="./热点分析图/maps-BATTERY.html" frameborder="0"></iframe>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <span class="jc">Map 3: Criminal Sexual Assault</span>
+        </div>
+        <div class="col-md-4">
+            <span class="jc">Map 4: Robbery</span>
+        </div>
+        <div class="col-md-4">
+            <span class="jc">Map 5: Weapons Violation</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <iframe src="./热点分析图/maps-CRIM%20SEXUAL%20ASSAULT.html" frameborder="0"></iframe>
+        </div>
+        <div class="col-md-4">
+            <iframe src="./热点分析图/maps-ROBBERY.html" frameborder="0"></iframe>
+        </div>
+        <div class="col-md-4">
+            <iframe src="./热点分析图/maps-WEAPONS%20VIOLATION.html" frameborder="0"></iframe>
+        </div>
+    </div>
+</div>
+<div>
+    <span>In the general heat map of the shooting case, the high-incidence areas (red part) cover almost the entire Chicago area, echoing the Chicago background mentioned, the whole Chicago city belongs to the high-risk crime city.</span>
+</div>
+<div>
+    <span>Comparing the maps of the five types of shooting crimes, the biggest heat area is Robbery. The least apparent heat area is the criminal sexual assault, which can just be seen a few cases within the heated area. The Robbery map has the highest density of case hotspots and the highest degree of aggregation while in the criminal sexual assault map, it is a scattered distribution of cases' cold spots, and the degree of dispersion in the case is relatively high. It is not difficult to find that the remaining three types of shooting crimes are mainly concentrated in the northwest and southeast regions, which are the high-incidence areas. Some strip or banded area near the northeast along the coastline are cold areas of the case, indicating that there are a few incidents of shooting.</span>
+</div>
+<div>
+    <h1>Time Trend Analysis</h1>
+    <h1 class="qx">Annual</h1>
+</div>
+<div>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="./每年犯罪趋势（数量）.png" class="img-responsive" alt="Responsive image" width="100%">
+        </div>
+        <div class="col-md-6">
+            <img src="./每年犯罪趋势占比.png" class="img-responsive" alt="Responsive image"  width="100%">
+        </div>
+    </div>
+    <div style="text-align: center" class="jc">General Trend of Shooting Crime with Percentage Distribution </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <img src="./每年5种类型犯罪趋势.png" class="img-responsive" alt="Responsive image"  width="100%">
+        </div>
+        <div class="col-md-6">
+            <img src="./每年五种类型犯罪趋势-占比.png" class="img-responsive" alt="Responsive image"  width="100%">
+        </div>
+    </div>
+    <div style="text-align: center" class="jc">Five Types of Shooting Crime Trends with Proportion distribution</div>
+</div>
+<div>
+    <span>In terms of the overall situation, On the whole, the shootings dropped sharply in 2012-2013, and the lowest record in the ten years of shootings in 2014.  However, the good times did not last long, and it rose sharply from 2015 to 2016. In 2017, it reached a record high of ten years. Although the incidence of shooting cases eased in 2018, the proportion remains high.</span>
+</div>
+<div>
+    <span>As far as the five types are concerned, although there is no more significant change than the general trend, some changes have taken place. Robbery type has the largest share, and together with the three types of cases in the middle, it began to decline in 2012 but increased in the later period, similar to the general trend change mentioned above. However, the Criminal Sexual Assault has the smallest proportion and has remained almost unchanged in the past decade. Prior to 2016, the ranking of the three types of cases in the middle remained stable. However, in 2016, it is not difficult to find that Assault's growth exceeds the weapons violation, but the weapons violation jumped to the top in 2018.
+    </span>
+</div>
+<div>
+    <h1 class="qx" style="margin-top:40px;">Monthly</h1>
+</div>
+<div>
+    <div class="row">
+        <div class="col-md-4">
+            <img src="./每月/2009.png" class="img-responsive" alt="Responsive image">
+        </div>
+        <div class="col-md-4">
+            <img src="./每月/2010.png" class="img-responsive" alt="Responsive image">
+        </div>
+        <div class="col-md-4">
+            <img src="./每月/2011.png" class="img-responsive" alt="Responsive image">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <img src="./每月/2012.png" class="img-responsive" alt="Responsive image">
+        </div>
+        <div class="col-md-4">
+            <img src="./每月/2013.png" class="img-responsive" alt="Responsive image">
+        </div>
+        <div class="col-md-4">
+            <img src="./每月/2014.png" class="img-responsive" alt="Responsive image">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <img src="./每月/2015.png" class="img-responsive" alt="Responsive image">
+        </div>
+        <div class="col-md-4">
+            <img src="./每月/2016.png" class="img-responsive" alt="Responsive image">
+        </div>
+        <div class="col-md-4">
+            <img src="./每月/2017.png" class="img-responsive" alt="Responsive image">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <img src="./每月/2015.png" class="img-responsive" alt="Responsive image">
+        </div>
+        <div class="col-md-4">
+            <img src="./每月/2016.png" class="img-responsive" alt="Responsive image">
+        </div>
+        <div class="col-md-4">
+            <img src="./每月/2018.png" class="img-responsive" alt="Responsive image">
+        </div>
+    </div>
+</div>
+<div style="text-align: center" class="jc">General Trend of Shooting Crime (Propotion)</div>
+<div>
+    <span style="display:block;margin-bottom: 50px;">An extraordinary phenomenon was found: the annual shooting rate was the lowest in February, and the proportions in July and August were both higher. It is regrettable to see, in combination with the Policy, there is no direct relationship between them. Moreover, due to the various influencing factors and the effectiveness and timeliness of legal policies, it is not straightforward to judge whether the Policy has practical effects and significance in controlling the shooting.</span>
+</div>
+<div>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="./每月/每月不同类型犯罪趋势.png" class="img-responsive" alt="Responsive image">
+        </div>
+        <div class="col-md-6">
+            <img src="./每月/每月5种类型犯罪趋势-占比.png" class="img-responsive" alt="Responsive image">
+        </div>
+    </div>
+</div>
+<div style="text-align: center" class="jc">Five Types of Shooting Crime Trends with Proportion Distribution</div>
+<div>
+    <span style="display:block;text-align: center;">With the exception of Criminal Sexual Assault, the other four types of changes are ups and downs.</span>
+</div>
+<div>
+    <h1 class="qx">Analysis of Time Series</h1>
+</div>
+<div>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="./qt_img111531710742533.png" class="img-responsive" alt="Responsive image">
+        </div>
+        <div class="col-md-6">
+            <img src="./qt_img15646565859333.png" class="img-responsive" alt="Responsive image">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div style="text-align: center" class="jc">Prediction 2019.1-3</div>
+        </div>
+        <div class="col-md-6">
+            <div style="text-align: center" class="jc">Prediction 2019-2021</div>
+        </div>
+    </div>
+</div>
+<div style="padding-top: 20px"><span>A decade of historical data is used, and the ARIMA model is applied to predict the number of future shooting cases. The forecast line represents the expected number of shooting cases per month after 2019. The grey area is the error burst. There is just a slight downward trend, but the ups and downs are still huge. This result may not be ideal.</span></div>
+
+<div>
+    <h1>Other Finding</h1>
+    <h1 class="qx">Domestic-related</h1>
+</div>
+<div>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="./domestic为2时的犯罪分布.png" class="img-responsive" alt="Responsive image">
+        </div>
+        <div class="col-md-6">
+            <span>“Domestic Indicates whether the incident was domestic-related as defined by the Illinois Domestic Violence Act (Chicago Data Portal, 2019)”, Therefore, Assault type has the strongest correlation with this violent law.</span>
+        </div>
+    </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
